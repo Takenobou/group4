@@ -36,6 +36,11 @@ public class CredentialStorage {
     }
 
     public void store(Credential credential) {
+        if (credential == null) {
+            System.err.println("Cannot store null credential.");
+            return;
+        }
+
         // Check if the credential already exists
         boolean exists = credentials.stream()
                 .anyMatch(c -> c.getEmailOrUsername().equals(credential.getEmailOrUsername()));
@@ -63,7 +68,7 @@ public class CredentialStorage {
                 List<Credential> loadedCredentials = objectMapper.readValue(file, new TypeReference<List<Credential>>(){});
                 credentials.addAll(loadedCredentials);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Error loading credentials: " + e.getMessage());
             }
         }
     }
@@ -72,7 +77,7 @@ public class CredentialStorage {
         try {
             objectMapper.writeValue(file, credentials);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error saving credentials: " + e.getMessage());
         }
     }
 }
