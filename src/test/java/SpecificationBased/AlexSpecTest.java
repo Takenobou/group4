@@ -1,4 +1,4 @@
-package group4.passwordmanager.test.SpecificationBased;
+package SpecificationBased;
 
 import group4.passwordmanager.model.Credential;
 import group4.passwordmanager.model.CredentialStorage;

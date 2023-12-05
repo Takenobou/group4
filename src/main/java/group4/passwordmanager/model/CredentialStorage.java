@@ -36,6 +36,11 @@ public class CredentialStorage {
     }
 
     public void store(Credential credential) {
+        if (credential == null) {
+            System.err.println("Cannot store null credential.");
+            return;
+        }
+
         // Check if the credential already exists
         boolean exists = credentials.stream()
                 .anyMatch(c -> c.getEmailOrUsername().equals(credential.getEmailOrUsername()));

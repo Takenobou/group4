@@ -3,7 +3,6 @@ package group4.passwordmanager.service;
 import group4.passwordmanager.model.Credential;
 import group4.passwordmanager.model.CredentialStorage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CredentialService {
@@ -53,7 +52,5 @@ public class CredentialService {
     public void updateCredential(Credential credential) {
         storage.update(credential);
     }
-
-
 
 }
