@@ -21,7 +21,7 @@ public class PasswordManagerApp {
 
 
         while (true) {
-            System.out.println("\nChoose an option: (search, list, create, view, edit, exit)");
+            System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all, exit)");
             String option = scanner.nextLine();
             String[] parts = option.split(" ");
             String command = parts[0];
@@ -54,6 +54,19 @@ public class PasswordManagerApp {
                         }
                     }
                     break;
+
+                case "delete_all":
+                    System.out.println("Are you sure you want to delete all credentials? (yes/no)");
+                    String confirmation = scanner.nextLine();
+                    if ("yes".equalsIgnoreCase(confirmation)) {
+                        storage.deleteAllCredentials();
+                        System.out.println("All credentials have been deleted.");
+                    } else {
+                        System.out.println("Operation cancelled.");
+                    }
+                    break;
+
+
                 case "exit":
                     System.out.println("Exiting...");
                     return;

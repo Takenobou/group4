@@ -80,4 +80,10 @@ public class CredentialStorage {
             System.err.println("Error saving credentials: " + e.getMessage());
         }
     }
+
+    public void deleteAllCredentials() {
+        credentials.clear(); // Clear the list of credentials
+        saveCredentials();   // Save the empty list to the file
+    }
+
 }
