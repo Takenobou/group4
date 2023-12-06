@@ -18,10 +18,12 @@ public class PasswordManagerApp {
         CredentialManager credentialManager = new CredentialManager(credentialService, tagManager, historyTracker, searchService);
         DeleteAllCredentials deletionService = new DeleteAllCredentials(storage);
         TagFilterService tagSearchService = new TagFilterService(storage);
+        CredentialEditService credentialEditService = new CredentialEditService(storage);
 
 
         while (true) {
-            System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all, list_by_tag, exit)");
+            System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all," +
+                    "list_by_tag, edit_email, exit)");
             String option = scanner.nextLine();
             String[] parts = option.split(" ");
             String command = parts[0];
@@ -72,7 +74,9 @@ public class PasswordManagerApp {
                     tagSearchService.listCredentialsByTag(tag);
                     break;
 
-
+                case "edit_email":
+                    credentialEditService.editEmailOrUsername(scanner);
+                    break;
 
                 case "exit":
                     System.out.println("Exiting...");
