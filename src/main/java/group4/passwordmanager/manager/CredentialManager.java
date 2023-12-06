@@ -28,7 +28,7 @@ public class CredentialManager {
         List<Credential> credentials = credentialService.getAllCredentials();
         for (int i = 0; i < credentials.size(); i++) {
             Credential credential = credentials.get(i);
-            System.out.println((i + 1) + ": Email/Username: " + credential.getEmailOrUsername() + ", Website: " + credential.getWebsite() + ", Tags " + credential.getTags());
+            System.out.println((i + 1) + ": Email/Username: " + credential.getEmailOrUsername() + ", Website: " + credential.getWebsite() + ", Tags " + credential.getTags() + ", Fav " + credential.isFavorite());
         }
     }
 
@@ -48,6 +48,9 @@ public class CredentialManager {
         Credential credential = new Credential(emailOrUsername, password, website);
         credential.setTags(tags);
         credentialService.addCredential(credential);
+
+        // Ask if the user wants to save the credential as a favorite
+        FavoritesManager.markAsFavorite(scanner, credentialService);
 
         System.out.println("Credential added successfully.");
     }
@@ -85,7 +88,10 @@ public class CredentialManager {
             System.out.println("Enter new Website (leave blank to keep current):");
             String newWebsite = scanner.nextLine();
 
-            List<String> newTags = tagManager.editTags(scanner, credential.getTags());
+            tagManager.editTags(scanner, credential.getTags());
+
+            // Ask if the user wants to save the credential as a favorite
+            FavoritesManager.markAsFavoriteDuringEdit(scanner, credentialService, index);
 
             credentialService.editCredential(index, newEmailOrUsername, newPassword, newWebsite);
             System.out.println("Credential updated successfully.");
