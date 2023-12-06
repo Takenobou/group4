@@ -5,6 +5,7 @@ import group4.passwordmanager.manager.TagManager;
 import group4.passwordmanager.model.CredentialStorage;
 import group4.passwordmanager.service.AccessHistoryTracker;
 import group4.passwordmanager.service.CredentialService;
+import group4.passwordmanager.service.DeleteAllCredentials;
 import group4.passwordmanager.service.SearchService;
 
 import java.util.Scanner;
@@ -18,6 +19,7 @@ public class PasswordManagerApp {
         SearchService searchService = new SearchService(credentialService);
         TagManager tagManager = new TagManager(storage);
         CredentialManager credentialManager = new CredentialManager(credentialService, tagManager, historyTracker, searchService);
+        DeleteAllCredentials deletionService = new DeleteAllCredentials(storage);
 
 
         while (true) {
@@ -59,7 +61,7 @@ public class PasswordManagerApp {
                     System.out.println("Are you sure you want to delete all credentials? (yes/no)");
                     String confirmation = scanner.nextLine();
                     if ("yes".equalsIgnoreCase(confirmation)) {
-                        storage.deleteAllCredentials();
+                        deletionService.deleteAllCredentials();
                         System.out.println("All credentials have been deleted.");
                     } else {
                         System.out.println("Operation cancelled.");

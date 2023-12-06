@@ -68,11 +68,4 @@
             this.lastAccessed = lastAccessed;
         }
 
-//        public LocalDateTime getDateCreated() {
-//            return dateCreated;
-//        }
-//
-//        public void setDateCreated(LocalDateTime dateCreated) {
-//            this.dateCreated = dateCreated;
-//        }
     }
