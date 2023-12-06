@@ -2,36 +2,31 @@ package StatementBased;
 
 import group4.passwordmanager.model.CredentialStorage;
 import group4.passwordmanager.model.Credential;
+import group4.passwordmanager.service.CredentialService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AlexStatementTest {
-
     private CredentialStorage credentialStorage;
-    private final String testFilename = "test_credentials.json";
+    private CredentialService service;
+    private final String TEST_FILENAME = "test_credentials.json";
 
     @BeforeEach
     public void setUp() {
-        // Delete the test file if it exists
-        try {
-            Files.deleteIfExists(Paths.get(testFilename));
-        } catch (Exception e) {
-            fail("Setup failed: " + e.getMessage());
-        }
-        credentialStorage = new CredentialStorage(testFilename);
+        credentialStorage = new CredentialStorage(TEST_FILENAME);
+        service = new CredentialService(credentialStorage);
     }
 
     @AfterEach
     public void tearDown() {
         // Clean up: Delete the test file
-        new File(testFilename).delete();
+        new File(TEST_FILENAME).delete();
     }
 
     @Test
@@ -80,7 +75,7 @@ public class AlexStatementTest {
         Credential credential = new Credential("user@example.com", "password123", "website.com");
         credentialStorage.store(credential);
         // Reinitialise to trigger loading from file
-        credentialStorage = new CredentialStorage(testFilename);
+        credentialStorage = new CredentialStorage(TEST_FILENAME);
         assertFalse(credentialStorage.getAllCredentials().isEmpty());
     }
 
@@ -89,7 +84,7 @@ public class AlexStatementTest {
         Credential credential = new Credential("user@example.com", "password123", "website.com");
         credentialStorage.store(credential);
         // Check if file exists and is not empty
-        File file = new File(testFilename);
+        File file = new File(TEST_FILENAME);
         assertTrue(file.exists() && file.length() > 0);
     }
 
@@ -132,14 +127,74 @@ public class AlexStatementTest {
     @Test
     void loadCredentialsWithUnreadableFileShouldHandleException() throws IOException {
         // Create a file and restrict its permissions
-        File testFile = new File(testFilename);
+        File testFile = new File(TEST_FILENAME);
         assertTrue(testFile.createNewFile());
         assertTrue(testFile.setReadable(false));
 
-        CredentialStorage storage = new CredentialStorage(testFilename);
+        CredentialStorage storage = new CredentialStorage(TEST_FILENAME);
         assertTrue(storage.getAllCredentials().isEmpty());
 
         // Reset the file permissions after the test
         assertTrue(testFile.setReadable(true));
+    }
+
+    //CredentialService tests
+
+    @Test
+    void getAllCredentialsShouldReturnAll() {
+        Credential credential = new Credential("user@example.com", "password", "example.com");
+        service.addCredential(credential);
+
+        List<Credential> retrieved = service.getAllCredentials();
+        assertEquals(1, retrieved.size());
+        assertEquals(credential, retrieved.get(0));
+    }
+
+    @Test
+    void getCredentialByValidIndexShouldReturnCredential() {
+        Credential credential = new Credential("user@example.com", "password", "example.com");
+        service.addCredential(credential);
+
+        Credential retrieved = service.getCredentialByIndex(0);
+        assertEquals(credential, retrieved);
+    }
+
+    @Test
+    void getCredentialByInvalidIndexShouldReturnNull() {
+        assertNull(service.getCredentialByIndex(0));
+    }
+
+    @Test
+    void addCredentialShouldAddCredential() {
+        service.addCredential(new Credential("user@example.com", "password", "example.com"));
+        assertEquals(1, service.getAllCredentials().size());
+    }
+
+    @Test
+    void editCredentialWithValidIndexShouldUpdateCredential() {
+        service.addCredential(new Credential("user@example.com", "password", "example.com"));
+        service.editCredential(0, "newuser@example.com", "newpassword", "newexample.com");
+
+        Credential updated = service.getAllCredentials().get(0);
+        assertEquals("newuser@example.com", updated.getEmailOrUsername());
+        assertEquals("newpassword", updated.getPassword());
+        assertEquals("newexample.com", updated.getWebsite());
+    }
+
+    @Test
+    void editCredentialWithInvalidIndexShouldNotUpdate() {
+        service.editCredential(0, "newuser@example.com", "newpassword", "newexample.com");
+        assertTrue(service.getAllCredentials().isEmpty());
+    }
+
+    @Test
+    void updateCredentialShouldUpdateCredential() {
+        Credential credential = new Credential("user@example.com", "password", "example.com");
+        service.addCredential(credential);
+        Credential updatedCredential = new Credential("user@example.com", "newpassword", "example.com");
+        service.updateCredential(updatedCredential);
+
+        Credential retrieved = service.getAllCredentials().get(0);
+        assertEquals("newpassword", retrieved.getPassword());
     }
 }
