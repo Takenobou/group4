@@ -5,6 +5,7 @@ import group4.passwordmanager.manager.TagManager;
 import group4.passwordmanager.model.CredentialStorage;
 import group4.passwordmanager.service.AccessHistoryTracker;
 import group4.passwordmanager.service.CredentialService;
+import group4.passwordmanager.service.DeleteAllCredentials;
 import group4.passwordmanager.service.SearchService;
 
 import java.util.Scanner;
@@ -18,10 +19,11 @@ public class PasswordManagerApp {
         SearchService searchService = new SearchService(credentialService);
         TagManager tagManager = new TagManager(storage);
         CredentialManager credentialManager = new CredentialManager(credentialService, tagManager, historyTracker, searchService);
+        DeleteAllCredentials deletionService = new DeleteAllCredentials(storage);
 
 
         while (true) {
-            System.out.println("\nChoose an option: (search, list, create, view, edit, exit)");
+            System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all, exit)");
             String option = scanner.nextLine();
             String[] parts = option.split(" ");
             String command = parts[0];
@@ -54,6 +56,19 @@ public class PasswordManagerApp {
                         }
                     }
                     break;
+
+                case "delete_all":
+                    System.out.println("Are you sure you want to delete all credentials? (yes/no)");
+                    String confirmation = scanner.nextLine();
+                    if ("yes".equalsIgnoreCase(confirmation)) {
+                        deletionService.deleteAllCredentials();
+                        System.out.println("All credentials have been deleted.");
+                    } else {
+                        System.out.println("Operation cancelled.");
+                    }
+                    break;
+
+
                 case "exit":
                     System.out.println("Exiting...");
                     return;
