@@ -65,7 +65,7 @@ public class CredentialStorage {
     private void loadCredentials() {
         if (file.exists() && !file.isDirectory()) {
             try {
-                List<Credential> loadedCredentials = objectMapper.readValue(file, new TypeReference<List<Credential>>(){});
+                List<Credential> loadedCredentials = objectMapper.readValue(file, new TypeReference<>(){});
                 credentials.addAll(loadedCredentials);
             } catch (IOException e) {
                 System.err.println("Error loading credentials: " + e.getMessage());
