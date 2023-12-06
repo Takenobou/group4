@@ -3,10 +3,7 @@ package group4.passwordmanager;
 import group4.passwordmanager.manager.CredentialManager;
 import group4.passwordmanager.manager.TagManager;
 import group4.passwordmanager.model.CredentialStorage;
-import group4.passwordmanager.service.AccessHistoryTracker;
-import group4.passwordmanager.service.CredentialService;
-import group4.passwordmanager.service.DeleteAllCredentials;
-import group4.passwordmanager.service.SearchService;
+import group4.passwordmanager.service.*;
 
 import java.util.Scanner;
 
@@ -20,10 +17,11 @@ public class PasswordManagerApp {
         TagManager tagManager = new TagManager(storage);
         CredentialManager credentialManager = new CredentialManager(credentialService, tagManager, historyTracker, searchService);
         DeleteAllCredentials deletionService = new DeleteAllCredentials(storage);
+        TagFilterService tagSearchService = new TagFilterService(storage);
 
 
         while (true) {
-            System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all, exit)");
+            System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all, list_by_tag, exit)");
             String option = scanner.nextLine();
             String[] parts = option.split(" ");
             String command = parts[0];
@@ -67,6 +65,13 @@ public class PasswordManagerApp {
                         System.out.println("Operation cancelled.");
                     }
                     break;
+
+                case "list_by_tag":
+                    System.out.println("Enter the tag:");
+                    String tag = scanner.nextLine();  // This line will wait for the user to input the tag
+                    tagSearchService.listCredentialsByTag(tag);
+                    break;
+
 
 
                 case "exit":
