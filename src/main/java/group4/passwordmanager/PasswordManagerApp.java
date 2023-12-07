@@ -2,9 +2,11 @@ package group4.passwordmanager;
 
 import group4.passwordmanager.manager.CredentialManager;
 import group4.passwordmanager.manager.TagManager;
+import group4.passwordmanager.model.Credential;
 import group4.passwordmanager.model.CredentialStorage;
 import group4.passwordmanager.service.*;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class PasswordManagerApp {
@@ -23,8 +25,8 @@ public class PasswordManagerApp {
 
 
         while (true) {
-            System.out.println("\nChoose an option: (search, list, create, view, edit, delete, " +
-                    "delete_all, list_by_tag, edit_email, exit)");
+            System.out.println("\nChoose an option: (search, list, create, view, edit, strength," +
+                    "delete, delete_all, list_by_tag, edit_email, exit)");
             String option = scanner.nextLine();
             String[] parts = option.split(" ");
             String command = parts[0];
@@ -43,6 +45,13 @@ public class PasswordManagerApp {
                     break;
                 case "create":
                     credentialManager.createCredential(scanner, credentialService, tagManager);
+
+                    List<Credential> allCredentials = credentialService.getAllCredentials();
+                    if (!allCredentials.isEmpty()) {
+                        Credential lastCredential = allCredentials.get(allCredentials.size() - 1);
+                        String passwordStrength = StrengthEvaluatorService.evaluatePasswordStrength(lastCredential.getPassword());
+                        System.out.println("The strength of the newly created password is: " + passwordStrength);
+                    }
                     break;
                 case "view":
                 case "edit":
@@ -58,6 +67,24 @@ public class PasswordManagerApp {
                     }
                     break;
 
+                case "strength":
+                    credentialManager.listCredentials(credentialService);
+                    System.out.println("Enter the number of the credential to check password strength:");
+                    try {
+                        int index = Integer.parseInt(scanner.nextLine()) - 1;
+                        Credential credential = credentialService.getCredentialByIndex(index);
+                        if (credential != null) {
+                            String passwordStrength = StrengthEvaluatorService.evaluatePasswordStrength(credential.getPassword());
+                            System.out.println("Password Strength: " + passwordStrength);
+                        } else {
+                            System.out.println("Invalid index.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input. Please enter a number.");
+                    }
+                    break;
+
+
                 case "delete_all":
                     System.out.println("Are you sure you want to delete all credentials? (yes/no)");
                     String confirmation = scanner.nextLine();
@@ -71,7 +98,7 @@ public class PasswordManagerApp {
 
                 case "list_by_tag":
                     System.out.println("Enter the tag:");
-                    String tag = scanner.nextLine();  // This line will wait for the user to input the tag
+                    String tag = scanner.nextLine();
                     tagSearchService.listCredentialsByTag(tag);
                     break;
 
