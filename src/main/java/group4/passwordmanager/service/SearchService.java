@@ -31,25 +31,31 @@ public class SearchService {
                 }
 
                 System.out.println("Enter the number of the credential to view its details or leave blank to go back:");
-                String selection = scanner.nextLine();
 
-                if (selection.equalsIgnoreCase("")) {
-                    return;  // Go back to choosing an option
-                }
+                if (scanner.hasNextLine()) {
+                    String selection = scanner.nextLine();
 
-                try {
-                    int index = Integer.parseInt(selection);
-                    if (index >= 1 && index <= credentials.size()) {
-                        viewPasswordAndCopyToClipboard(scanner, credentials.get(index - 1));
-                    } else {
-                        System.out.println("Invalid selection.");
+                    if (selection.equalsIgnoreCase("")) {
+                        return;  // Go back to choosing an option
                     }
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid selection.");
+
+                    try {
+                        int index = Integer.parseInt(selection);
+                        if (index >= 1 && index <= credentials.size()) {
+                            viewPasswordAndCopyToClipboard(scanner, credentials.get(index - 1));
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid selection.");
+                        throw e;  // Rethrow the exception to ensure it's caught in the test
+                    }
+                } else {
+                    System.out.println("No input available.");
+                    return;
                 }
             }
         }
     }
+
 
     public static void viewPasswordAndCopyToClipboard(Scanner scanner, Credential credential) {
         System.out.println("Password: " + credential.getPassword());
@@ -60,14 +66,12 @@ public class SearchService {
         if ("yes".equals(copyOption)) {
             ClipboardService.copyToClipboard(credential.getPassword());
             System.out.println("Password copied to clipboard!");
+        } else if ("no".equals(copyOption)) {
+            System.out.println("Password not copied");
         }
     }
 
-    public static void viewPasswordOnly(Credential credential) {
-        System.out.println("Password: " + credential.getPassword());
-    }
-
-    private List<Credential> searchCredentials(String searchTerm) {
+    public List<Credential> searchCredentials(String searchTerm) {
         List<Credential> matchingCredentials = new ArrayList<>();
 
         // Retrieve all credentials from the CredentialService
