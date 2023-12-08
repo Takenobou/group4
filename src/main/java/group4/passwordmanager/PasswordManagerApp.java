@@ -1,13 +1,11 @@
 package group4.passwordmanager;
 
 import group4.passwordmanager.manager.CredentialManager;
+import group4.passwordmanager.manager.MasterManager;
 import group4.passwordmanager.manager.TagManager;
 import group4.passwordmanager.model.CredentialStorage;
-import group4.passwordmanager.service.AccessHistoryTracker;
-import group4.passwordmanager.service.CredentialService;
-import group4.passwordmanager.service.DeleteAllCredentials;
-import group4.passwordmanager.service.SearchService;
-import group4.passwordmanager.service.OTPGenerator;
+import group4.passwordmanager.model.Master;
+import group4.passwordmanager.service.*;
 
 import java.util.Scanner;
 
@@ -21,6 +19,9 @@ public class PasswordManagerApp {
         TagManager tagManager = new TagManager(storage);
         CredentialManager credentialManager = new CredentialManager(credentialService, tagManager, historyTracker, searchService);
         DeleteAllCredentials deletionService = new DeleteAllCredentials(storage);
+        Master master = new Master();
+        MasterService masterService = new MasterService();
+        MasterManager masterManager = new MasterManager(masterService, master);
 
 
         while (true) {
@@ -82,6 +83,7 @@ public class PasswordManagerApp {
                     return;
                 case "security":
                     System.out.println("Security chosen.");
+                    MasterManager.createMaster();
                     break;
                 default:
                     System.out.println("Invalid option. Please try again.");
