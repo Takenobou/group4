@@ -11,10 +11,7 @@ public class DeleteAllCredentials {
     }
 
     public void deleteAllCredentials() {
-        // Clear all credentials
         credentialStorage.getAllCredentials().clear();
-
-        // Save the empty state to the file
         credentialStorage.saveCredentials();
     }
 }

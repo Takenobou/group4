@@ -21,7 +21,7 @@ public class StrengthSortManager {
             String category = scanner.nextLine();
             strengthSortService.listCredentialsByCategory(category);
         } else if ("2".equals(sortOption)) {
-            System.out.println("Choose an option:\n1: Strongest to Weakest\n2: Weakest to Strongest");
+            System.out.println("Choose an option:\n1: Weakest to Strongest\n2: Strongest to Weakest");
             String orderOption = scanner.nextLine();
             if ("1".equals(orderOption)) {
                 strengthSortService.listCredentialsByStrength(false); // false for descending order

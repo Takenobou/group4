@@ -7,9 +7,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Service to list credentials based on password strength.
- */
 public class PasswordStrengthListingService {
     private final CredentialStorage credentialStorage;
 
@@ -17,9 +14,7 @@ public class PasswordStrengthListingService {
         this.credentialStorage = storage;
     }
 
-    /**
-     * Convert strength category to a numerical value for sorting.
-     */
+    //Convert strength category to a numerical value for sorting.
     private int strengthValue(String passwordStrength) {
         switch (passwordStrength) {
             case "Strong":
@@ -29,16 +24,14 @@ public class PasswordStrengthListingService {
             case "Weak":
                 return 1;
             default:
-                return 0;  // For undefined strengths
+                return 0;
         }
     }
 
-    /**
-     * Lists credentials sorted by password strength.
-     * @param ascending Whether to sort in ascending order.
-     */
+
+     //credentials sorted by password strength.
     public void listCredentialsByStrength(boolean ascending) {
-        // Comparator for sorting credentials by strength value
+        //sorting credentials by strength value
         Comparator<Credential> byStrength = Comparator.comparingInt(
                 c -> strengthValue(StrengthEvaluatorService.evaluatePasswordStrength(c.getPassword()))
         );
@@ -56,12 +49,8 @@ public class PasswordStrengthListingService {
         }
     }
 
-    /**
-     * Lists credentials by a specific strength category.
-     * @param strengthCategory The strength category to filter by.
-     */
     public void listCredentialsBySpecificStrength(String strengthCategory) {
-        // Filter credentials by the specified strength category
+        // Filter credentials by strength
         List<Credential> filteredCredentials = credentialStorage.getAllCredentials()
                 .stream()
                 .filter(c -> StrengthEvaluatorService.evaluatePasswordStrength(c.getPassword()).equals(strengthCategory))

@@ -1,6 +1,5 @@
 package group4.passwordmanager.service;
 
-//Class for evaluating the strength of passwords
 public class StrengthEvaluatorService {
     public static String evaluatePasswordStrength(String password) {
         if (password == null || password.isEmpty()) {
@@ -20,13 +19,13 @@ public class StrengthEvaluatorService {
                 hasSpecialChars = true;
             }
 
-            // If all conditions are met to check further
+            //if all conditions are met to check further
             if (hasLetters && hasDigits && hasSpecialChars) {
                 break;
             }
         }
 
-        // Evaluate the strength based on the character types found
+        //evaluate  strength based on character types found
         if (hasLetters && hasDigits && hasSpecialChars) {
             return "Strong";
         } else if (hasLetters && hasDigits) {

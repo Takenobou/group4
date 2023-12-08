@@ -15,6 +15,9 @@
 
         private String passwordStrength;
 
+        // Field for last modified date
+        private LocalDateTime lastModified;
+
         public Credential() {
         }
 
@@ -83,4 +86,12 @@
             this.lastAccessed = lastAccessed;
         }
 
+
+        public LocalDateTime getLastModified() {
+            return lastModified;
+        }
+
+        public void setLastModified(LocalDateTime lastModified) {
+            this.lastModified = lastModified;
+        }
     }

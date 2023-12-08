@@ -6,6 +6,9 @@ import group4.passwordmanager.service.CredentialService;
 import group4.passwordmanager.service.PasswordGenerator;
 import group4.passwordmanager.service.SearchService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Scanner;
 
@@ -63,6 +66,27 @@ public class CredentialManager {
             historyTracker.trackAccessHistory(credential);
             System.out.println("Tags: " + credential.getTags());
 
+            historyTracker.trackAccessHistory(credential);
+
+            if (credential.getLastModified() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                String formattedDate = credential.getLastModified().format(formatter);
+                System.out.println("Last Modified: " + formattedDate);
+
+
+
+                long daysSinceModification = ChronoUnit.DAYS.between(credential.getLastModified(), LocalDateTime.now());
+                System.out.println("Days since last modification: " + daysSinceModification + " days");
+
+
+                if (daysSinceModification > 30) {
+                    System.out.println("Recommendation: Consider updating this password. It has been " + daysSinceModification + " days since it was last updated.");
+                }
+            } else {
+                System.out.println("Last Modified: This credential has never been updated.");
+            }
+
+
         } else {
             System.out.println("Invalid index.");
         }
@@ -72,6 +96,10 @@ public class CredentialManager {
         index -= 1;
         Credential credential = credentialService.getCredentialByIndex(index);
         if (credential != null) {
+            credential.setLastModified(LocalDateTime.now());
+            credentialService.updateCredential(credential);
+            System.out.println("Credential updated successfully. Last modified on: " + credential.getLastModified());
+
             System.out.println("Editing Credential: " + credential.getEmailOrUsername());
             System.out.println("Current Password: " + credential.getPassword());
             System.out.println("Current Website: " + credential.getWebsite());

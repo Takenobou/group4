@@ -6,17 +6,16 @@ import group4.passwordmanager.model.CredentialStorage;
 import java.util.List;
 import java.util.Scanner;
 
-//Class for handling deleting  individual credentials
 public class DeleteCredentialService {
     private CredentialStorage credentialStorage;
 
 
-    //CredentialStorage object to access and modify stored credentials
+    //credential storage object to access and modify stored credentials
     public DeleteCredentialService(CredentialStorage storage) {
         this.credentialStorage = storage;
     }
 
-    //Func deletes single credential. scanner object to read input from the user
+    //func deletes single credential.  scanner object to read input from the user
     public void deleteSpecificCredential(Scanner scanner) {
         List<Credential> credentials = credentialStorage.getAllCredentials();
 
@@ -43,9 +42,8 @@ public class DeleteCredentialService {
             return;
         }
 
-        // Remove the selected credential
         credentials.remove(index);
-        credentialStorage.saveCredentials(); // Assuming this method saves the updated list to the file
+        credentialStorage.saveCredentials();
 
         System.out.println("Credential deleted successfully.");
     }

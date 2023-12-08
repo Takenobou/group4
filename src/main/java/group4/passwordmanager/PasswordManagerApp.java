@@ -27,7 +27,7 @@ public class PasswordManagerApp {
 
         while (true) {
             System.out.println("\nChoose an option: (search, list, create, view, edit," +
-                    "delete, delete_all, last_accessed, exit)");
+                    "delete, delete_all, last_accessed, strength, sort_strength, exit)");
             String option = scanner.nextLine();
             String[] parts = option.split(" ");
             String command = parts[0];
