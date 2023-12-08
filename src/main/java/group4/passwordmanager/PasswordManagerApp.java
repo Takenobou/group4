@@ -23,7 +23,7 @@ public class PasswordManagerApp {
 
 
         while (true) {
-            System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all, exit)");
+            System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all, OTP, exit)");
             String option = scanner.nextLine();
             String[] parts = option.split(" ");
             String command = parts[0];
@@ -67,6 +67,8 @@ public class PasswordManagerApp {
                         System.out.println("Operation cancelled.");
                     }
                     break;
+                case "otp":
+                    System.out.println("Genrating OTP...");
 
 
                 case "exit":
