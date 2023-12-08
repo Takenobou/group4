@@ -5,7 +5,7 @@ import group4.passwordmanager.service.MasterService;
 
 public class MasterManager {
 
-    private MasterService masterService;
+    private static MasterService masterService;
 
     private static Master master;
 
@@ -16,10 +16,11 @@ public class MasterManager {
 
     // Create master pass
     public static void createMaster(){
-        // Dummy
+        // Generate Master pass
         String password = "masterPasswordNew";
+        // set master pass
         master.setMasterPassword(password);
-        System.out.println("Master password created.");
+        masterService.displayMessage("Master Password set successfully.");
         System.out.println(master.getMasterPassword());
     }
 
