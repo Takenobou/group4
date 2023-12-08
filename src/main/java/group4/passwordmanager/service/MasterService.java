@@ -25,4 +25,9 @@ public class MasterService {
             System.out.println("Account is unlocked.");
         }
     }
+
+    public String promptForUnlocking() {
+        System.out.print("Enter Master Password to Unlock: ");
+        return scanner.nextLine();
+    }
 }
