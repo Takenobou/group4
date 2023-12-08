@@ -21,6 +21,11 @@ public class OTPGenerator {
         sb.append(numericCharacters.charAt(random.nextInt(numericCharacters.length())));
         sb.append(specialCharacters.charAt(random.nextInt(specialCharacters.length())));
 
+        // Generate remaining characters randomly from the combined set
+        for (int i = 3; i < length; i++) {
+            sb.append(combinedChars.charAt(random.nextInt(combinedChars.length())));
+        }
+
         return sb.toString();
     }
 }
