@@ -45,7 +45,16 @@ public class MasterManager {
         }
     }
 
-    public static void deleteMasterPassword(){
-        masterService.displayMessage("Master Password has been deleted successfully");
+    public static void deleteMasterPassword() {
+        if (master.hasMasterPassword()) {
+            if (masterService.confirmDeletion()) {
+                master.deleteMasterPassword();
+                masterService.displayMessage("Master Password deleted successfully.");
+            } else {
+                masterService.displayMessage("Master Password deletion cancelled.");
+            }
+        } else {
+            masterService.displayMessage("No existing Master Password found.");
+        }
     }
 }
