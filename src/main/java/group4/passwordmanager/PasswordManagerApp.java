@@ -7,6 +7,7 @@ import group4.passwordmanager.service.AccessHistoryTracker;
 import group4.passwordmanager.service.CredentialService;
 import group4.passwordmanager.service.DeleteAllCredentials;
 import group4.passwordmanager.service.SearchService;
+import group4.passwordmanager.service.OTPGenerator;
 
 import java.util.Scanner;
 
@@ -68,8 +69,8 @@ public class PasswordManagerApp {
                     }
                     break;
                 case "otp":
-                    System.out.println("Genrating OTP...");
-
+                    System.out.println("Generating OTP...");
+                    System.out.println("OTP is: " + OTPGenerator.generateOTP());
 
                 case "exit":
                     System.out.println("Exiting...");
