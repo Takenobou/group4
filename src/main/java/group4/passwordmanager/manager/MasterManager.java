@@ -35,7 +35,15 @@ public class MasterManager {
         }
     }
 
-    // Edit master pass
+    public static void editMasterPassword() {
+        if (master.hasMasterPassword()) {
+            String newPassword = master.generateRandomPassword(16);
+            master.updateMasterPassword(newPassword);
+            masterService.displayMessage("Master Password updated successfully to " + newPassword);
+        } else {
+            masterService.displayMessage("No existing Master Password found. Please create one first.");
+        }
+    }
 
     // Delete master pass
 }

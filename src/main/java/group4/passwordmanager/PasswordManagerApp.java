@@ -89,7 +89,7 @@ public class PasswordManagerApp {
                                 MasterManager.createMasterPassword();
                                 break;
                             case "edit":
-                                System.out.println("Edit chosen");
+                                MasterManager.editMasterPassword();
                                 break;
                             case "delete":
                                 System.out.println("Delete chosen");

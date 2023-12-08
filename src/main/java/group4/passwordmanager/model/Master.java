@@ -24,6 +24,10 @@ public class Master {
         return Base64.getEncoder().encodeToString(randomBytes).substring(0, length);
     }
 
+    public void updateMasterPassword(String newPassword) {
+        this.masterPassword = newPassword;
+    }
+
     public String getMasterPassword(){return masterPassword;}
 
     public void setMasterPassword(String masterPassword) {
