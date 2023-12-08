@@ -62,4 +62,17 @@ public class MasterManager {
         master.lock();
         masterService.displayMessage("Account locked successfully.");
     }
+
+    public void unlockAccount() {
+        if (master.isLocked()) {
+            String password = masterService.promptForUnlocking();
+            if (master.unlock(password)) {
+                masterService.displayMessage("Account unlocked successfully.");
+            } else {
+                masterService.displayMessage("Incorrect Master Password. Account remains locked.");
+            }
+        } else {
+            masterService.displayMessage("Account is already unlocked.");
+        }
+    }
 }

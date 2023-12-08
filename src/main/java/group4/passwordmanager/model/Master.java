@@ -81,6 +81,15 @@ public class Master {
         this.isLocked = true;
     }
 
+    public boolean unlock(String password) {
+        loadMasterPassword();
+        if (this.masterPassword != null && this.masterPassword.equals(password)) {
+            this.isLocked = false;
+            return true;
+        }
+        return false;
+    }
+
     public boolean isLocked() {
         return isLocked;
     }

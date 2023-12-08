@@ -98,7 +98,7 @@ public class PasswordManagerApp {
                                 System.out.println("Lock");
                                 MasterManager.lockAccount();
                                 while (master.isLocked()){
-                                    masterService.promptForUnlocking();
+                                    masterManager.unlockAccount();
                                 }
                                 break;
                             case "exit":
