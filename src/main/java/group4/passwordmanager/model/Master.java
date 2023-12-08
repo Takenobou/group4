@@ -34,4 +34,8 @@ public class Master {
         this.masterPassword = masterPassword;
     }
 
+    public void deleteMasterPassword() {
+        this.masterPassword = null;
+    }
+
 }
