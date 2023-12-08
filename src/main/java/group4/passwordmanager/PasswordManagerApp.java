@@ -77,10 +77,6 @@ public class PasswordManagerApp {
                     if ("yes".equals(ans)){
                         break;
                     }
-
-                case "exit":
-                    System.out.println("Exiting...");
-                    return;
                 case "security":
                     boolean in = true;
                     while (in) {
@@ -98,10 +94,14 @@ public class PasswordManagerApp {
                             case "delete":
                                 System.out.println("Delete chosen");
                                 break;
+                            // Add lock & Unlock
                             case "exit":
                                 in = false;
                         }
                     }
+                case "exit":
+                    System.out.println("Exiting...");
+                    return;
             }
         }
     }
