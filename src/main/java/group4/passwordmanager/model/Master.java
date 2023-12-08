@@ -14,6 +14,8 @@ public class Master {
 
     private String masterPassword;
 
+    private boolean isLocked = true;
+
     private String filePath = "master_password.json";
 
     public Master(){loadMasterPassword();}
@@ -74,5 +76,12 @@ public class Master {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void lock() {
+        this.isLocked = true;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
     }
 }

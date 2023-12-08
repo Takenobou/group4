@@ -57,4 +57,9 @@ public class MasterManager {
             masterService.displayMessage("No existing Master Password found.");
         }
     }
+
+    public static void lockAccount() {
+        master.lock();
+        masterService.displayMessage("Account locked successfully.");
+    }
 }

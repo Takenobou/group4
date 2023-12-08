@@ -96,6 +96,7 @@ public class PasswordManagerApp {
                                 break;
                             case "lock":
                                 System.out.println("Lock");
+                                MasterManager.lockAccount();
                                 break;
                             case "exit":
                                 in = false;

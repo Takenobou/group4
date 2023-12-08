@@ -17,4 +17,12 @@ public class MasterService {
         String input = scanner.nextLine();
         return "yes".equalsIgnoreCase(input.trim());
     }
+
+    public void displayLockStatus(boolean isLocked) {
+        if (isLocked) {
+            System.out.println("Account is locked.");
+        } else {
+            System.out.println("Account is unlocked.");
+        }
+    }
 }
