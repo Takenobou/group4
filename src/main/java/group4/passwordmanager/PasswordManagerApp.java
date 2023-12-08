@@ -82,11 +82,21 @@ public class PasswordManagerApp {
                     System.out.println("Exiting...");
                     return;
                 case "security":
-                    System.out.println("Security chosen.");
-                    MasterManager.createMaster();
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println("\nChoose an option: (create master, edit master, delete master");
+                    String answer = scanner.nextLine();
+                    String[] answerParts = answer.split(" ");
+                    String secCommand = answerParts[0];
+                    switch (secCommand.toLowerCase()) {
+                        case "create":
+                            MasterManager.createMasterPassword();
+                            break;
+                        case "edit":
+                            System.out.println("Edit chosen");
+                            break;
+                        case "delete":
+                            System.out.println("Delete chosen");
+                            break;
+                    }
             }
         }
     }

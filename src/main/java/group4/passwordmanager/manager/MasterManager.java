@@ -24,6 +24,17 @@ public class MasterManager {
         System.out.println(master.getMasterPassword());
     }
 
+    // Method to handle the creation or generation of the master password
+    public static void createMasterPassword() {
+        if (!master.hasMasterPassword()) {
+            String randomPassword = master.generateRandomPassword(16);
+            master.setMasterPassword(randomPassword);
+            masterService.displayMessage("Generated Random Master Password: " + randomPassword);
+        } else {
+            masterService.displayMessage("Master Password already exists.");
+        }
+    }
+
     // Edit master pass
 
     // Delete master pass
