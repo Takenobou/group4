@@ -92,7 +92,7 @@ public class PasswordManagerApp {
                                 MasterManager.editMasterPassword();
                                 break;
                             case "delete":
-                                System.out.println("Delete chosen");
+                                MasterManager.deleteMasterPassword();
                                 break;
                             // Add lock & Unlock
                             case "exit":

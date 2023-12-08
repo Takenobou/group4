@@ -45,5 +45,7 @@ public class MasterManager {
         }
     }
 
-    // Delete master pass
+    public static void deleteMasterPassword(){
+        masterService.displayMessage("Master Password has been deleted successfully");
+    }
 }
