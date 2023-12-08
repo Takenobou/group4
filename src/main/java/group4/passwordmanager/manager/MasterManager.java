@@ -14,16 +14,6 @@ public class MasterManager {
         this.master = master;
     }
 
-    // Create master pass
-    public static void createMaster(){
-        // Generate Master pass
-        String password = "masterPasswordNew";
-        // set master pass
-        master.setMasterPassword(password);
-        masterService.displayMessage("Master Password set successfully.");
-        System.out.println(master.getMasterPassword());
-    }
-
     // Method to handle the creation or generation of the master password
     public static void createMasterPassword() {
         if (!master.hasMasterPassword()) {

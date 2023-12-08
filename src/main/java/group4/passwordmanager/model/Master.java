@@ -53,24 +53,26 @@ public class Master {
         saveMasterPassword();
     }
 
-    private void loadMasterPassword() {
-        try {
-            if (Files.exists(Paths.get(filePath))) {
-                FileReader reader = new FileReader(filePath);
-                JSONObject jsonObject = new JSONObject(new JSONTokener(reader));
-                this.masterPassword = jsonObject.optString("masterPassword", null);
-                reader.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+private void loadMasterPassword() {
+    try {
+        if (Files.exists(Paths.get(filePath))) {
+            FileReader reader = new FileReader(filePath);
+            JSONObject jsonObject = new JSONObject(new JSONTokener(reader));
+            this.masterPassword = jsonObject.optString("masterPassword", null);
+            this.isLocked = jsonObject.optBoolean("isLocked", true); // Default to true if not specified
+            reader.close();
         }
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
 
     private void saveMasterPassword() {
         try {
             FileWriter writer = new FileWriter(filePath);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("masterPassword", this.masterPassword);
+            jsonObject.put("isLocked", this.isLocked);
             writer.write(jsonObject.toString());
             writer.close();
         } catch (IOException e) {

@@ -23,6 +23,12 @@ public class PasswordManagerApp {
         MasterService masterService = new MasterService();
         MasterManager masterManager = new MasterManager(masterService, master);
 
+        while (master.isLocked()) {
+            if (master.isLocked()) {
+                System.out.println("The account is locked. Please unlock to continue.");
+                masterManager.unlockAccount();
+            }
+        }
 
         while (true) {
             System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all, otp, security, exit)");
