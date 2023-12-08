@@ -71,6 +71,11 @@ public class PasswordManagerApp {
                 case "otp":
                     System.out.println("Generating OTP...");
                     System.out.println("OTP is: " + OTPGenerator.generateOTP());
+                    System.out.println("Would you like to go back to the menu? (Yes/No)");
+                    String ans = scanner.nextLine().toLowerCase();
+                    if ("yes".equals(ans)){
+                        break;
+                    }
 
                 case "exit":
                     System.out.println("Exiting...");
