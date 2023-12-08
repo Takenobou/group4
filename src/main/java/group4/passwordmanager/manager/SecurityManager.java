@@ -1,15 +1,17 @@
 package group4.passwordmanager.manager;
 
+import group4.passwordmanager.service.MasterService;
+
 public class SecurityManager {
 
-    private SecurityService securityService;
+    private MasterService masterService;
 
-    public SecurityManager(SecurityService securityService){
-        this.securityService = securityService;
+    public SecurityManager(MasterService masterService){
+        this.masterService = masterService;
     }
 
     // Create master pass
-    public void createMaster(SecurityService securityService){
+    public void createMaster(MasterService masterService){
 
     }
 
