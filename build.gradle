@@ -15,6 +15,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.16.0'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3'
+    implementation 'org.json:json:20220320' // Json dependency Hugo
 }
 
 

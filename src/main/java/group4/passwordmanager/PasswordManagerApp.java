@@ -80,7 +80,7 @@ public class PasswordManagerApp {
                 case "security":
                     boolean in = true;
                     while (in) {
-                        System.out.println("\nChoose an option: (create master, edit master, delete master, exit)");
+                        System.out.println("\nChoose an option: (create master, edit master, delete master, lock, exit)");
                         String answer = scanner.nextLine();
                         String[] answerParts = answer.split(" ");
                         String secCommand = answerParts[0];
@@ -94,7 +94,9 @@ public class PasswordManagerApp {
                             case "delete":
                                 MasterManager.deleteMasterPassword();
                                 break;
-                            // Add lock & Unlock
+                            case "lock":
+                                System.out.println("Lock");
+                                break;
                             case "exit":
                                 in = false;
                         }
