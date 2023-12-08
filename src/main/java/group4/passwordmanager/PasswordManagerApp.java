@@ -24,7 +24,7 @@ public class PasswordManagerApp {
 
 
         while (true) {
-            System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all, OTP, exit)");
+            System.out.println("\nChoose an option: (search, list, create, view, edit, delete_all, OTP, security, exit)");
             String option = scanner.nextLine();
             String[] parts = option.split(" ");
             String command = parts[0];
@@ -80,6 +80,9 @@ public class PasswordManagerApp {
                 case "exit":
                     System.out.println("Exiting...");
                     return;
+                case "security":
+                    System.out.println("Security chosen.");
+                    break;
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
