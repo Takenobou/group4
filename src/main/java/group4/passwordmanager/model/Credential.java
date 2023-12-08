@@ -1,5 +1,7 @@
     package group4.passwordmanager.model;
 
+    import group4.passwordmanager.service.StrengthEvaluatorService;
+
     import java.time.LocalDateTime;
     import java.util.List;
 
@@ -11,6 +13,8 @@
         private boolean isFavorite;
         private LocalDateTime lastAccessed;
 
+        private String passwordStrength;
+
         public Credential() {
         }
 
@@ -18,6 +22,17 @@
             this.emailOrUsername = emailOrUsername;
             this.password = password;
             this.website = website;
+            //Set the password strength
+            this.passwordStrength = StrengthEvaluatorService.evaluatePasswordStrength(password);
+
+        }
+
+        public String getPasswordStrength() {
+            return passwordStrength;
+        }
+
+        public void setPasswordStrength(String passwordStrength) {
+            this.passwordStrength = passwordStrength;
         }
 
         public String getEmailOrUsername() {

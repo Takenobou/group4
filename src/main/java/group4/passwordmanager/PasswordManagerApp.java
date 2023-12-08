@@ -19,14 +19,14 @@ public class PasswordManagerApp {
         TagManager tagManager = new TagManager(storage);
         CredentialManager credentialManager = new CredentialManager(credentialService, tagManager, historyTracker, searchService);
         DeleteAllCredentials deletionService = new DeleteAllCredentials(storage);
-        TagFilterService tagSearchService = new TagFilterService(storage);
-        CredentialEditService credentialEditService = new CredentialEditService(storage);
         DeleteCredentialService credentialDeletionService = new DeleteCredentialService(storage);
+        LastAccessedListService lastAccessedService = new LastAccessedListService(storage);
+        PasswordStrengthSortService strengthSortService = new PasswordStrengthSortService(storage);
 
 
         while (true) {
-            System.out.println("\nChoose an option: (search, list, create, view, edit, strength," +
-                    "delete, delete_all, list_by_tag, edit_email, exit)");
+            System.out.println("\nChoose an option: (search, list, create, view, edit," +
+                    "delete, delete_all, last_accessed, exit)");
             String option = scanner.nextLine();
             String[] parts = option.split(" ");
             String command = parts[0];
@@ -68,22 +68,22 @@ public class PasswordManagerApp {
                     break;
 
                 case "strength":
-                    credentialManager.listCredentials(credentialService);
-                    System.out.println("Enter the number of the credential to check password strength:");
-                    try {
-                        int index = Integer.parseInt(scanner.nextLine()) - 1;
-                        Credential credential = credentialService.getCredentialByIndex(index);
-                        if (credential != null) {
-                            String passwordStrength = StrengthEvaluatorService.evaluatePasswordStrength(credential.getPassword());
-                            System.out.println("Password Strength: " + passwordStrength);
-                        } else {
-                            System.out.println("Invalid index.");
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input. Please enter a number.");
+                    List<Credential> credentials = credentialService.getAllCredentials();
+                    if (credentials.isEmpty()) {
+                        System.out.println("No credentials available.");
+                        break;
+                    }
+
+                    for (int i = 0; i < credentials.size(); i++) {
+                        Credential credential = credentials.get(i);
+                        String strength = StrengthEvaluatorService.evaluatePasswordStrength(credential.getPassword());
+                        String tags = String.join(", ", credential.getTags());
+                        System.out.println((i + 1) + ": Email/Username: " + credential.getEmailOrUsername()
+                                + ", Website: " + credential.getWebsite()
+                                + ", Tags: " + tags
+                                + ", Strength: " + strength);
                     }
                     break;
-
 
                 case "delete_all":
                     System.out.println("Are you sure you want to delete all credentials? (yes/no)");
@@ -96,18 +96,35 @@ public class PasswordManagerApp {
                     }
                     break;
 
-                case "list_by_tag":
-                    System.out.println("Enter the tag:");
-                    String tag = scanner.nextLine();
-                    tagSearchService.listCredentialsByTag(tag);
+                case "last_accessed":
+                    lastAccessedService.listCredentialsByLastAccessed();
                     break;
 
-                case "edit_email":
-                    credentialEditService.editEmailOrUsername(scanner);
-                    break;
 
                 case "delete":
                     credentialDeletionService.deleteSpecificCredential(scanner);
+                    break;
+
+                case "sort_strength":
+                    System.out.println("Choose an option:\n1: Sort by category\n2: List by strength");
+                    String sortOption = scanner.nextLine();
+                    if ("1".equals(sortOption)) {
+                        System.out.println("Enter strength category (Weak, Good, Strong):");
+                        String category = scanner.nextLine();
+                        strengthSortService.listCredentialsByCategory(category);
+                    } else if ("2".equals(sortOption)) {
+                        System.out.println("Choose an option:\n1: Strongest to Weakest\n2: Weakest to Strongest");
+                        String orderOption = scanner.nextLine();
+                        if ("1".equals(orderOption)) {
+                            strengthSortService.listCredentialsByStrength(false); // false for descending order
+                        } else if ("2".equals(orderOption)) {
+                            strengthSortService.listCredentialsByStrength(true); // true for ascending order
+                        } else {
+                            System.out.println("Invalid option.");
+                        }
+                    } else {
+                        System.out.println("Invalid option.");
+                    }
                     break;
 
                 case "exit":

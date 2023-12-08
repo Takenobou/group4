@@ -28,6 +28,9 @@ public class CredentialStorage {
     public void update(Credential credential) {
         for (int i = 0; i < credentials.size(); i++) {
             if (credentials.get(i).getEmailOrUsername().equals(credential.getEmailOrUsername())) {
+                Credential existingCredential = credentials.get(i);
+                //Updates password and implicitly password strength
+                existingCredential.setPassword(credential.getPassword());
                 credentials.set(i, credential);
                 saveCredentials();
                 break;
