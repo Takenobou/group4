@@ -1,4 +1,4 @@
-package RandomBased;
-
-public class KlaudiuszRandomTest {
-}
+//package RandomBased;
+//
+//public class KlaudiuszRandomTest {
+//}

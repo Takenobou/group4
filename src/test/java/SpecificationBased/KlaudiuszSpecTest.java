@@ -1,4 +1,4 @@
-package SpecificationBased;
-
-public class KlaudiuszSpecTest {
-}
+//package SpecificationBased;
+//
+//public class KlaudiuszSpecTest {
+//}

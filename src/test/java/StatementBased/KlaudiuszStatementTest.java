@@ -1,4 +1,4 @@
-package StatementBased;
-
-public class KlaudiuszStatementTest {
-}
+//package StatementBased;
+//
+//public class KlaudiuszStatementTest {
+//}
