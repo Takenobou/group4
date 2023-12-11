@@ -4,6 +4,8 @@ import group4.passwordmanager.manager.MasterManager;
 import group4.passwordmanager.model.Master;
 import group4.passwordmanager.service.MasterService;
 import group4.passwordmanager.service.OTPGenerator;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,11 +22,10 @@ public class HugoRandomTest {
 
     @Test
     public void testRandomPasswordGenerationWithNoMasterPassword() {
-        // Set up the master with no existing master password
+
         Mockito.when(mockMaster.hasMasterPassword()).thenReturn(false);
         Mockito.when(mockMaster.generateRandomPassword(16)).thenReturn("randomPassword");
 
-        // Execute the createMasterPassword method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.createMasterPassword();
 
@@ -47,22 +48,22 @@ public class HugoRandomTest {
 
     @Test
     public void testRandomPasswordGeneration() {
-        // Set up the master with an unlocked account
         Mockito.when(mockMaster.isLocked()).thenReturn(false);
         Mockito.when(mockMasterService.promptForUnlocking()).thenReturn("correctPassword");
         Mockito.when(mockMaster.unlock("correctPassword")).thenReturn(true);
+        Mockito.when(mockMaster.getMasterPassword()).thenReturn("someRandomPassword");
 
-        // Execute the lockAccount method
+        // Execute the unlockAccount method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.unlockAccount();
 
-        // Verify that the account is unlocked successfully and the correct message is displayed
-        Mockito.verify(mockMaster, Mockito.times(1)).lock();
-        Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Account unlocked successfully.");
+        // Verify that the account is unlocked successfully
+        Mockito.verify(mockMaster).unlock("correctPassword");
+        Mockito.verify(mockMasterService).displayMessage("Account unlocked successfully.");
 
-        // Check if the generated password has a length of 16
         String generatedPassword = mockMaster.getMasterPassword();
-        // Add an assertion here based on your specific criteria for a valid random password
+        Assertions.assertEquals("someRandomPassword", generatedPassword);
+        assertEquals(16, generatedPassword.length());
     }
 
     @Test
@@ -75,7 +76,7 @@ public class HugoRandomTest {
             // Random-based: Ensure the length is correct
             assertEquals(14, otp.length());
 
-            // Random-based: Ensure at least one character from each character type is present
+            //Ensure at least one character from each character type is present
             assertTrue(containsCharacterType(otp, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
             assertTrue(containsCharacterType(otp, "0123456789"));
             assertTrue(containsCharacterType(otp, "!@#$%^&*"));

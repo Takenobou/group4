@@ -32,7 +32,7 @@ public class HugoMutationTest {
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.createMasterPassword();
 
-        // Verify that a random password is generated, set, and the correct message is displayed
+        // Verify that a random password is generated
         Mockito.verify(mockMaster, Mockito.times(1)).hasMasterPassword();
         Mockito.verify(mockMaster, Mockito.times(1)).generateRandomPassword(16);
         Mockito.verify(mockMaster, Mockito.times(1)).setMasterPassword("randomPassword");
@@ -45,11 +45,9 @@ public class HugoMutationTest {
         Mockito.when(mockMaster.hasMasterPassword()).thenReturn(true);
         Mockito.when(mockMasterService.confirmDeletion()).thenReturn(true);
 
-        // Execute the deleteMasterPassword method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.deleteMasterPassword();
 
-        // Verify that the master password is deleted successfully and the correct message is displayed
         Mockito.verify(mockMaster, Mockito.times(1)).deleteMasterPassword();
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Master Password deleted successfully.");
     }
@@ -59,11 +57,9 @@ public class HugoMutationTest {
         // Set up the master with an unlocked account
         Mockito.when(mockMaster.isLocked()).thenReturn(false);
 
-        // Execute the lockAccount method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.lockAccount();
 
-        // Verify that the account is locked successfully and the correct message is displayed
         Mockito.verify(mockMaster, Mockito.times(1)).lock();
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Account locked successfully.");
     }
@@ -73,10 +69,8 @@ public class HugoMutationTest {
         // Generate OTP
         String otp = OTPGenerator.generateOTP();
 
-        // Mutation-based: Ensure the length is correct
         assertEquals(14, otp.length());
 
-        // Mutation-based: Ensure at least one character from each character type is present
         assertTrue(containsCharacterType(otp, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
         assertTrue(containsCharacterType(otp, "0123456789"));
         assertTrue(containsCharacterType(otp, "!@#$%^&*"));

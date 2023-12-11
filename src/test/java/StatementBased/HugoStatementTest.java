@@ -20,15 +20,12 @@ public class HugoStatementTest {
 
     @Test
     public void testCreateMasterPasswordSuccessfully() {
-        // Set up the master with no existing master password
         Mockito.when(mockMaster.hasMasterPassword()).thenReturn(false);
         Mockito.when(mockMaster.generateRandomPassword(16)).thenReturn("randomPassword");
 
-        // Execute the createMasterPassword method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.createMasterPassword();
 
-        // Verify that a random password is generated, set, and the correct message is displayed
         Mockito.verify(mockMaster, Mockito.times(1)).hasMasterPassword();
         Mockito.verify(mockMaster, Mockito.times(1)).generateRandomPassword(16);
         Mockito.verify(mockMaster, Mockito.times(1)).setMasterPassword("randomPassword");
@@ -37,7 +34,6 @@ public class HugoStatementTest {
 
     @Test
     public void testMasterPasswordAlreadyExists() {
-        // Set up the master with an existing master password
         Mockito.when(mockMaster.hasMasterPassword()).thenReturn(true);
 
         // Execute the createMasterPassword method
@@ -70,15 +66,12 @@ public class HugoStatementTest {
 
     @Test
     public void testCancelDeleteMasterPassword() {
-        // Set up the master with an existing master password but cancel deletion
         Mockito.when(mockMaster.hasMasterPassword()).thenReturn(true);
         Mockito.when(mockMasterService.confirmDeletion()).thenReturn(false);
 
-        // Execute the deleteMasterPassword method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.deleteMasterPassword();
 
-        // Verify that the master password deletion is cancelled and the correct message is displayed
         Mockito.verify(mockMaster, Mockito.times(1)).hasMasterPassword();
         Mockito.verify(mockMasterService, Mockito.times(1)).confirmDeletion();
         Mockito.verify(mockMaster, Mockito.times(0)).deleteMasterPassword();
@@ -87,14 +80,13 @@ public class HugoStatementTest {
 
     @Test
     public void testNoExistingMasterPassword() {
-        // Set up the master with no existing master password
         Mockito.when(mockMaster.hasMasterPassword()).thenReturn(false);
 
         // Execute the deleteMasterPassword method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.deleteMasterPassword();
 
-        // Verify that the correct message is displayed when no existing master password is found
+        // Verify that the correct message is displayed
         Mockito.verify(mockMaster, Mockito.times(1)).hasMasterPassword();
         Mockito.verify(mockMasterService, Mockito.times(0)).confirmDeletion();
         Mockito.verify(mockMaster, Mockito.times(0)).deleteMasterPassword();
@@ -112,7 +104,7 @@ public class HugoStatementTest {
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.unlockAccount();
 
-        // Verify that the account is unlocked successfully and the correct message is displayed
+        // Verify that the account is unlocked successfully
         Mockito.verify(mockMasterService, Mockito.times(1)).promptForUnlocking();
         Mockito.verify(mockMaster, Mockito.times(1)).unlock("correctPassword");
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Account unlocked successfully.");

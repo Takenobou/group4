@@ -23,15 +23,13 @@ public class HugoSpecificationTest {
 
     @Test
     public void testCreateMasterPasswordSuccessfully() {
-        // Set up the master with no existing master password
         Mockito.when(mockMaster.hasMasterPassword()).thenReturn(false);
         Mockito.when(mockMaster.generateRandomPassword(16)).thenReturn("randomPassword");
 
-        // Execute the createMasterPassword method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.createMasterPassword();
 
-        // Verify that a random password is generated, set, and the correct message is displayed
+        // Verify that a random password is generated
         Mockito.verify(mockMaster, Mockito.times(1)).hasMasterPassword();
         Mockito.verify(mockMaster, Mockito.times(1)).generateRandomPassword(16);
         Mockito.verify(mockMaster, Mockito.times(1)).setMasterPassword("randomPassword");
@@ -56,22 +54,18 @@ public class HugoSpecificationTest {
 
     @Test
     public void testDeleteMasterPasswordSuccessfully() {
-        // Set up the master with an existing master password
         Mockito.when(mockMaster.hasMasterPassword()).thenReturn(true);
         Mockito.when(mockMasterService.confirmDeletion()).thenReturn(true);
 
-        // Execute the deleteMasterPassword method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.deleteMasterPassword();
 
-        // Verify that the master password is deleted successfully and the correct message is displayed
         Mockito.verify(mockMaster, Mockito.times(1)).deleteMasterPassword();
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Master Password deleted successfully.");
     }
 
     @Test
     public void testCancelDeleteMasterPassword() {
-        // Set up the master with an existing master password but cancel deletion
         Mockito.when(mockMaster.hasMasterPassword()).thenReturn(true);
         Mockito.when(mockMasterService.confirmDeletion()).thenReturn(false);
 
@@ -79,21 +73,18 @@ public class HugoSpecificationTest {
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.deleteMasterPassword();
 
-        // Verify that the master password deletion is cancelled and the correct message is displayed
+        // Verify that the master password deletion is cancelled
         Mockito.verify(mockMaster, Mockito.times(0)).deleteMasterPassword();
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Master Password deletion cancelled.");
     }
 
     @Test
     public void testNoExistingMasterPassword() {
-        // Set up the master with no existing master password
         Mockito.when(mockMaster.hasMasterPassword()).thenReturn(false);
 
-        // Execute the deleteMasterPassword method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.deleteMasterPassword();
 
-        // Verify that the correct message is displayed when no existing master password is found
         Mockito.verify(mockMaster, Mockito.times(0)).deleteMasterPassword();
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("No existing Master Password found.");
     }
@@ -107,7 +98,7 @@ public class HugoSpecificationTest {
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.lockAccount();
 
-        // Verify that the account is locked successfully and the correct message is displayed
+        // Verify that the account is locked successfully
         Mockito.verify(mockMaster, Mockito.times(1)).lock();
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Account locked successfully.");
     }
@@ -128,23 +119,20 @@ public class HugoSpecificationTest {
 
     @Test
     public void testLockAccountWithIncorrectPassword() {
-        // Set up the master with an unlocked account and an incorrect password provided
         Mockito.when(mockMaster.isLocked()).thenReturn(false);
         Mockito.when(mockMasterService.promptForUnlocking()).thenReturn("incorrectPassword");
         Mockito.when(mockMaster.unlock("incorrectPassword")).thenReturn(false);
 
-        // Execute the lockAccount method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.unlockAccount();
 
-        // Verify that the account remains unlocked and the correct message is displayed
         Mockito.verify(mockMaster, Mockito.times(0)).lock();
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Incorrect Master Password. Account remains locked.");
     }
 
     @Test
     public void testLockAccountWithCorrectPassword() {
-        // Set up the master with an unlocked account and a correct password provided
+        // Set up the master with an unlocked account
         Mockito.when(mockMaster.isLocked()).thenReturn(false);
         Mockito.when(mockMasterService.promptForUnlocking()).thenReturn("correctPassword");
         Mockito.when(mockMaster.unlock("correctPassword")).thenReturn(true);
@@ -153,7 +141,7 @@ public class HugoSpecificationTest {
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.unlockAccount();
 
-        // Verify that the account is unlocked successfully and the correct message is displayed
+        // Verify that the account is unlocked successfully
         Mockito.verify(mockMaster, Mockito.times(1)).lock();
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Account unlocked successfully.");
     }
@@ -163,10 +151,10 @@ public class HugoSpecificationTest {
         // Generate OTP
         String otp = OTPGenerator.generateOTP();
 
-        // Specification: Ensure the length is correct
+        // Ensure the length is correct
         assertEquals(14, otp.length());
 
-        // Specification: Ensure at least one character from each character type is present
+        // Ensure at least one character from each character type is present
         assertTrue("No uppercase letter found", containsCharacterType(otp, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
         assertTrue("No numeric digit found", containsCharacterType(otp, "0123456789"));
         assertTrue("No special character found", containsCharacterType(otp, "!@#$%^&*"));
@@ -187,16 +175,13 @@ public class HugoSpecificationTest {
 
     @Test
     public void testUnlockLockedAccountWithCorrectPassword() {
-        // Set up the master with a locked account and a correct password provided
         Mockito.when(mockMaster.isLocked()).thenReturn(true);
         Mockito.when(mockMasterService.promptForUnlocking()).thenReturn("correctPassword");
         Mockito.when(mockMaster.unlock("correctPassword")).thenReturn(true);
 
-        // Execute the unlockAccount method
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.unlockAccount();
 
-        // Verify that the account is unlocked successfully and the correct message is displayed
         Mockito.verify(mockMasterService, Mockito.times(1)).promptForUnlocking();
         Mockito.verify(mockMaster, Mockito.times(1)).unlock("correctPassword");
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Account unlocked successfully.");
@@ -228,7 +213,7 @@ public class HugoSpecificationTest {
         MasterManager masterManager = new MasterManager(mockMasterService, mockMaster);
         masterManager.unlockAccount();
 
-        // Verify that the account is already unlocked and the correct message is displayed
+        // Verify that the account is already unlocked
         Mockito.verify(mockMasterService, Mockito.times(0)).promptForUnlocking();
         Mockito.verify(mockMaster, Mockito.times(0)).unlock(Mockito.anyString());
         Mockito.verify(mockMasterService, Mockito.times(1)).displayMessage("Account is already unlocked.");
