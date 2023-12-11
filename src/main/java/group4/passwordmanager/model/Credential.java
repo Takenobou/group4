@@ -30,6 +30,9 @@
 
         }
 
+        public Credential() {
+        }
+
         public String getPasswordStrength() {
             return passwordStrength;
         }

@@ -1,6 +1,5 @@
 package group4.passwordmanager.manager;
 
-import group4.passwordmanager.model.Credential;
 import group4.passwordmanager.model.CredentialStorage;
 import group4.passwordmanager.service.PasswordStrengthSortService;
 
@@ -24,9 +23,9 @@ public class StrengthSortManager {
             System.out.println("Choose an option:\n1: Weakest to Strongest\n2: Strongest to Weakest");
             String orderOption = scanner.nextLine();
             if ("1".equals(orderOption)) {
-                strengthSortService.listCredentialsByStrength(false); // false for descending order
+                strengthSortService.listCredentialsByStrength(true);
             } else if ("2".equals(orderOption)) {
-                strengthSortService.listCredentialsByStrength(true); // true for ascending order
+                strengthSortService.listCredentialsByStrength(false);
             } else {
                 System.out.println("Invalid option.");
             }
