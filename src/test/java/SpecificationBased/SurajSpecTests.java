@@ -3,33 +3,102 @@ package SpecificationBased;
 import group4.passwordmanager.model.Credential;
 import group4.passwordmanager.model.CredentialStorage;
 import group4.passwordmanager.service.CredentialService;
-import org.junit.jupiter.api.*;
+import group4.passwordmanager.service.DeleteCredentialService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Scanner;
 
-class AlexSpecTest {
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+public class SurajSpecTests {
 
     private CredentialStorage storage;
-    private CredentialService credentialService;
     private static final String TEST_FILENAME = "test_credentials.json";
-    private Credential testCredential;
+    private group4.passwordmanager.model.Credential testCredential;
+    private CredentialService service;
+
+
+    @Test
+    public void testSpecificationBased() {
+        CredentialStorage credentialStorage1 = mock(CredentialStorage.class); // Initialize credentialStorage1 with a mock object
+        when(credentialStorage1.getAllCredentials()).thenReturn(new ArrayList<>());
+
+        DeleteCredentialService deleteCredentialService1 = new DeleteCredentialService(credentialStorage1);
+        Scanner scanner1 = new Scanner(""); // Simulate user input (empty input)
+        deleteCredentialService1.deleteSpecificCredential(scanner1);
+
+        verify(credentialStorage1, times(1)).getAllCredentials();
+        verify(credentialStorage1, times(0)).saveCredentials();
+
+        CredentialStorage credentialStorage2 = mock(CredentialStorage.class); // Initialize credentialStorage2 with a mock object
+        List<Credential> credentials2 = generateCredentials(3);
+        when(credentialStorage2.getAllCredentials()).thenReturn(credentials2);
+
+        DeleteCredentialService deleteCredentialService2 = new DeleteCredentialService(credentialStorage2);
+        Scanner scanner2 = new Scanner("2\n"); // Simulate user input selecting the second credential
+        deleteCredentialService2.deleteSpecificCredential(scanner2);
+
+        verify(credentialStorage2, times(1)).getAllCredentials();
+        verify(credentialStorage2, times(1)).saveCredentials();
+
+    }
+
+    private List<Credential> generateCredentials(int count) {
+        List<Credential> credentials = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            credentials.add(new Credential("user" + i, "password" + i, "example" + i + ".com", null, null));
+        }
+
+        return credentials;
+    }
+
+
+
+    private List<Credential> generateCredentialsWithLastAccessed(int count) {
+        List<Credential> credentials = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+
+        for (int i = 0; i < count; i++) {
+            LocalDateTime lastAccessed = now.minusDays(i);
+            credentials.add(new Credential("user" + i, "password" + i, "example" + i + ".com", lastAccessed));
+        }
+
+        return credentials;
+    }
+
+
+
+    private List<Credential> generateCredentialsWithStrength(int count) {
+        List<Credential> credentials = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            credentials.add(new Credential("user" + i, "password" + i, "example" + i + ".com", "", "Strength" + i));
+        }
+
+        return credentials;
+    }
+
+    private CredentialService credentialService;
 
     @BeforeEach
     void setUp() throws IOException {
-        // Prepare a clean test environment before each test
         Files.deleteIfExists(Paths.get(TEST_FILENAME));
         storage = new CredentialStorage(TEST_FILENAME);
         credentialService = new CredentialService(storage);
-        testCredential = new Credential("testUser", "testPassword", "testWebsite");
+        testCredential = new Credential("testUser", "testPassword", "testWebsite", null);
     }
 
     @AfterEach
     void tearDown() throws IOException {
-        // Clean up after tests
         Files.deleteIfExists(Paths.get(TEST_FILENAME));
     }
 
@@ -56,7 +125,7 @@ class AlexSpecTest {
     @Test
     void updateShouldModifyExistingCredential() {
         storage.store(testCredential);
-        Credential updatedCredential = new Credential("testUser", "newPassword", "newWebsite");
+        Credential updatedCredential = new Credential("testUser", "newPassword", "newWebsite", null);
         storage.update(updatedCredential);
         Credential retrievedCredential = storage.getAllCredentials().get(0);
         assertEquals("newPassword", retrievedCredential.getPassword());
@@ -65,7 +134,7 @@ class AlexSpecTest {
     @Test
     void getAllCredentialsShouldReturnAllStoredCredentials() {
         storage.store(testCredential);
-        Credential anotherCredential = new Credential("anotherUser", "anotherPassword", "anotherWebsite");
+        Credential anotherCredential = new Credential("anotherUser", "anotherPassword", "anotherWebsite", null);
         storage.store(anotherCredential);
         List<Credential> credentials = storage.getAllCredentials();
         assertEquals(2, credentials.size());
@@ -75,32 +144,19 @@ class AlexSpecTest {
 
     @Test
     void loadCredentialsShouldLoadFromFile() throws IOException {
-        // Pre-populate the file
-        CredentialStorage preStorage = new CredentialStorage(TEST_FILENAME);
-        preStorage.store(testCredential);
-        preStorage.saveCredentials();
+        storage.store(testCredential);
+        storage.saveCredentials();
 
-        assertTrue(Files.exists(Paths.get(TEST_FILENAME))); // Verify file existence
+        assertTrue(Files.exists(Paths.get(TEST_FILENAME)));
 
-        // Read file content directly for verification
-        String fileContent = new String(Files.readAllBytes(Paths.get(TEST_FILENAME)));
-        assertFalse(fileContent.isEmpty()); // Ensure file is not empty
-
-        // Create a new instance to load from the file
         CredentialStorage postStorage = new CredentialStorage(TEST_FILENAME);
         List<Credential> credentials = postStorage.getAllCredentials();
 
-        // Replace the direct comparison with a more detailed check
-        boolean containsCredential = credentials.stream()
-                .anyMatch(c -> c.getEmailOrUsername().equals(testCredential.getEmailOrUsername()) &&
-                        c.getPassword().equals(testCredential.getPassword()) &&
-                        c.getWebsite().equals(testCredential.getWebsite()));
-        assertTrue(containsCredential);
+        assertTrue(credentials.contains(testCredential));
     }
 
     @Test
     void loadCredentialsWithUnreadableFileShouldHandleException() throws IOException {
-        // Create a file and restrict its permissions
         File testFile = new File(TEST_FILENAME);
         assertTrue(testFile.createNewFile());
         assertTrue(testFile.setReadable(false));
@@ -108,13 +164,11 @@ class AlexSpecTest {
         CredentialStorage storage = new CredentialStorage(TEST_FILENAME);
         assertTrue(storage.getAllCredentials().isEmpty());
 
-        // Reset the file permissions after the test
         assertTrue(testFile.setReadable(true));
     }
 
     @Test
     void loadCredentialsWithCorruptedFileShouldHandleException() throws IOException {
-        // Write invalid data to the file
         Files.write(Paths.get(TEST_FILENAME), "Invalid Data".getBytes());
 
         CredentialStorage storage = new CredentialStorage(TEST_FILENAME);
@@ -143,7 +197,6 @@ class AlexSpecTest {
         try {
             unwritableStorage.saveCredentials();
         } finally {
-            // Clean up: Set the directory back to writable and delete it
             unwritableDir.setWritable(true);
             testFile.delete();
             unwritableDir.delete();
@@ -165,7 +218,7 @@ class AlexSpecTest {
 
     @Test
     void addCredentialShouldAddCredential() {
-        Credential newCredential = new Credential("newUser", "newPassword", "newWebsite");
+        Credential newCredential = new Credential("newUser", "newPassword", "newWebsite", null);
         credentialService.addCredential(newCredential);
         assertTrue(credentialService.getAllCredentials().contains(newCredential));
     }
@@ -184,11 +237,15 @@ class AlexSpecTest {
     @Test
     void updateCredentialShouldUpdateCredential() {
         storage.store(testCredential);
-        Credential updatedCredential = new Credential("testUser", "updatedPassword", "testWebsite");
+        Credential updatedCredential = new Credential("testUser", "updatedPassword", "testWebsite", null);
         credentialService.updateCredential(updatedCredential);
 
         Credential retrievedCredential = credentialService.getAllCredentials().get(0);
         assertEquals("updatedPassword", retrievedCredential.getPassword());
     }
 
+
+
+
 }
+

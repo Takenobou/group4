@@ -48,7 +48,7 @@ public class CredentialManager {
         // Call TagManager to enter tags
         List<String> tags = tagManager.enterTags(scanner);
 
-        Credential credential = new Credential(emailOrUsername, password, website);
+        Credential credential = new Credential(emailOrUsername, password, website, null);
         credential.setTags(tags);
         credentialService.addCredential(credential);
 
@@ -127,3 +127,4 @@ public class CredentialManager {
         searchService.searchCredentialsAndPrintDetails(scanner, searchTerm);
     }
 }
+

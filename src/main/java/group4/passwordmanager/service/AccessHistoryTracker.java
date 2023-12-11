@@ -1,8 +1,6 @@
 package group4.passwordmanager.service;
 
 import group4.passwordmanager.model.Credential;
-import group4.passwordmanager.service.CredentialService;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

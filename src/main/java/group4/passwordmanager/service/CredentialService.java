@@ -53,4 +53,12 @@ public class CredentialService {
         storage.update(credential);
     }
 
+    public List<Credential> listCredentialsByStrength(boolean b) {
+        return null;
+    }
+
+    public List<Credential> listCredentialsBySpecificStrength(String string) {
+        return null;
+    }
+
 }

@@ -18,10 +18,10 @@
         // Field for last modified date
         private LocalDateTime lastModified;
 
-        public Credential() {
+        public Credential(String string, String string2, String string3, String string4, String string5) {
         }
 
-        public Credential(String emailOrUsername, String password, String website) {
+        public Credential(String emailOrUsername, String password, String website, LocalDateTime lastAccessed2) {
             this.emailOrUsername = emailOrUsername;
             this.password = password;
             this.website = website;
