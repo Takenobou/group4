@@ -2,7 +2,6 @@ package BranchBased;
 
 import group4.passwordmanager.model.Credential;
 import group4.passwordmanager.model.CredentialStorage;
-import group4.passwordmanager.service.CredentialService;
 import group4.passwordmanager.service.LastAccessedListService;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
@@ -14,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,9 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.List;
 import java.util.stream.IntStream;
 
 //Unit tests here test the last_accessed and last accessed functionalities
@@ -38,10 +33,7 @@ public class SortLastAccessedBranchTest {
     private final PrintStream originalOut = System.out;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
-    private LastAccessedListService last_accessed;
 
-    @Mock
-    private CredentialStorage credentialStorage;
 
 
 
@@ -59,11 +51,7 @@ public class SortLastAccessedBranchTest {
         System.setOut(new PrintStream(outContent));
         // Prepare a clean test environment before each test
         Files.deleteIfExists(Paths.get(TEST_FILENAME));
-        //DO NOT DO
-        //cockCredentialStorage = new CredentialStorage(TEST_FILENAME)
-        //INSTEAD MAKE A MOCK:
         mockCredentialStorage = mock(CredentialStorage.class);
-        //I CAN PASS THE MOCK OBJECT AS A PARAMETER INTO THE CONSTRUCTOR OF THE SERVICE BEING TESTED
         lastAccessedListService = new LastAccessedListService(mockCredentialStorage);
     }
 

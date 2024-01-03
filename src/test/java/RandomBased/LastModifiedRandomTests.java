@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Scanner;
 
 import group4.passwordmanager.service.SearchService;

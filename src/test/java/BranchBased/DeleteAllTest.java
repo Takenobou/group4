@@ -4,7 +4,6 @@ import group4.passwordmanager.manager.DeleteAllManager;
 import group4.passwordmanager.model.Credential;
 import group4.passwordmanager.model.CredentialStorage;
 import group4.passwordmanager.service.DeleteAllCredentials;
-import group4.passwordmanager.service.DeleteCredentialService;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,7 +16,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;

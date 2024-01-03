@@ -15,8 +15,6 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static RandomBased.PasswordGeneratorTesting.generateRandomPassword;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +22,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-import static org.mockito.Mockito.mock;
 
 //Random tests for strength functionality
 public class StrengthRandomTests {

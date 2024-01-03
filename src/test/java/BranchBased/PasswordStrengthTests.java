@@ -14,11 +14,9 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -266,13 +264,10 @@ public class PasswordStrengthTests {
 
     @Test
     public void testDisplayStrengthsWithEmptyCredentialList() {
-        // Arrange
         when(mockCredentialService.getAllCredentials()).thenReturn(Collections.emptyList());
 
-        // Act
         strengthDisplayManager.displayStrengths();
 
-        // Assert
         String output = getConsoleOutput();
         assertTrue(output.contains("No credentials available."),
                 "Output should indicate no credentials are available.");
@@ -280,13 +275,10 @@ public class PasswordStrengthTests {
 
     @Test
     public void testDisplayStrengthsWhenCredentialServiceReturnsNull() {
-        // Arrange
         when(mockCredentialService.getAllCredentials()).thenReturn(null);
 
-        // Act
         strengthDisplayManager.displayStrengths();
 
-        // Assert
         String output = getConsoleOutput();
         assertTrue(output.contains("No credentials available."),
                 "Output should indicate no credentials are available when service returns null.");
@@ -294,16 +286,13 @@ public class PasswordStrengthTests {
 
     @Test
     public void testDisplayStrengthsWithNullFieldsInCredentials() {
-        // Arrange
         List<Credential> testCredentials = List.of(
                 new Credential(null, "WeakPassword", null, null)
         );
         when(mockCredentialService.getAllCredentials()).thenReturn(testCredentials);
 
-        // Act
         strengthDisplayManager.displayStrengths();
 
-        // Assert
         String output = getConsoleOutput();
         assertTrue(output.contains("No Tags") && output.contains("Weak"),
                 "Output should handle null fields in credentials appropriately.");
