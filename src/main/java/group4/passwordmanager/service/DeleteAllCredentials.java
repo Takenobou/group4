@@ -14,4 +14,8 @@ public class DeleteAllCredentials {
         credentialStorage.getAllCredentials().clear();
         credentialStorage.saveCredentials();
     }
+
+    public boolean hasCredentials() {
+        return !credentialStorage.getAllCredentials().isEmpty();
+    }
 }

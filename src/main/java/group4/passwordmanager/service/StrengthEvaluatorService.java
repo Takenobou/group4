@@ -15,21 +15,16 @@ public class StrengthEvaluatorService {
                 hasLetters = true;
             } else if (Character.isDigit(c)) {
                 hasDigits = true;
-            } else {
+            } else if (!Character.isWhitespace(c)) { // considering characters that are not letters, digits, or whitespace as special
                 hasSpecialChars = true;
-            }
-
-            //if all conditions are met to check further
-            if (hasLetters && hasDigits && hasSpecialChars) {
-                break;
             }
         }
 
-        //evaluate  strength based on character types found
+        //evaluate strength based on character types found
         if (hasLetters && hasDigits && hasSpecialChars) {
             return "Strong";
-        } else if (hasLetters && hasDigits) {
-            return "Good";
+        } else if ((hasLetters && hasDigits) || (hasLetters && hasSpecialChars) || (hasDigits && hasSpecialChars)) {
+            return "Good"; // Considered good if any two types of characters are present
         } else {
             return "Weak";
         }

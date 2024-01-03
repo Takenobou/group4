@@ -27,12 +27,17 @@ public class PasswordStrengthSortService {
     }
 
     public void listCredentialsByStrength(boolean ascending) {
+        List<Credential> allCredentials = credentialStorage.getAllCredentials();
+        if (allCredentials == null) {
+            System.out.println("No credentials available.");
+            return;
+        }
+
         Comparator<Credential> byStrength = Comparator.comparingInt(
                 c -> strengthValue(StrengthEvaluatorService.evaluatePasswordStrength(c.getPassword()))
         );
 
-        List<Credential> sortedCredentials = credentialStorage.getAllCredentials()
-                .stream()
+        List<Credential> sortedCredentials = allCredentials.stream()
                 .sorted(ascending ? byStrength : byStrength.reversed())
                 .collect(Collectors.toList());
 

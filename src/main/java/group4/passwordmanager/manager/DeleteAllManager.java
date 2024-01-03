@@ -14,10 +14,17 @@ public class DeleteAllManager {
         System.out.println("Are you sure you want to delete all credentials? (yes/no)");
         String confirmation = scanner.nextLine();
         if ("yes".equalsIgnoreCase(confirmation)) {
-            deleteAllCredentialsService.deleteAllCredentials();
-            System.out.println("All credentials have been deleted.");
+            if (deleteAllCredentialsService.hasCredentials()) {
+                deleteAllCredentialsService.deleteAllCredentials();
+                System.out.println("All credentials have been deleted.");
+            } else {
+                System.out.println("No credentials available to delete.");
+            }
         } else {
             System.out.println("Operation cancelled.");
         }
     }
+
+
+
 }

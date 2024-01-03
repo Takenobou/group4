@@ -25,6 +25,7 @@
             this.emailOrUsername = emailOrUsername;
             this.password = password;
             this.website = website;
+            this.lastAccessed = lastAccessed2;
             //Set the password strength
             this.passwordStrength = StrengthEvaluatorService.evaluatePasswordStrength(password);
 

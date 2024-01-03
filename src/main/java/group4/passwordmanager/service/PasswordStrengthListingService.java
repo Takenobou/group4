@@ -29,25 +29,25 @@ public class PasswordStrengthListingService {
     }
 
 
-     //credentials sorted by password strength.
-    public void listCredentialsByStrength(boolean ascending) {
-        //sorting credentials by strength value
-        Comparator<Credential> byStrength = Comparator.comparingInt(
-                c -> strengthValue(StrengthEvaluatorService.evaluatePasswordStrength(c.getPassword()))
-        );
-
-        // Sort and collect the credentials
-        List<Credential> sortedCredentials = credentialStorage.getAllCredentials()
-                .stream()
-                .sorted(ascending ? byStrength : byStrength.reversed())
-                .collect(Collectors.toList());
-
-        // Display each credential with its strength
-        for (Credential credential : sortedCredentials) {
-            String strength = StrengthEvaluatorService.evaluatePasswordStrength(credential.getPassword());
-            System.out.println("Email/Username: " + credential.getEmailOrUsername() + ", Strength: " + strength);
-        }
-    }
+//     //credentials sorted by password strength.
+//    public void listCredentialsByStrength(boolean ascending) {
+//        //sorting credentials by strength value
+//        Comparator<Credential> byStrength = Comparator.comparingInt(
+//                c -> strengthValue(StrengthEvaluatorService.evaluatePasswordStrength(c.getPassword()))
+//        );
+//
+//        // Sort and collect the credentials
+//        List<Credential> sortedCredentials = credentialStorage.getAllCredentials()
+//                .stream()
+//                .sorted(ascending ? byStrength : byStrength.reversed())
+//                .collect(Collectors.toList());
+//
+//        // Display each credential with its strength
+//        for (Credential credential : sortedCredentials) {
+//            String strength = StrengthEvaluatorService.evaluatePasswordStrength(credential.getPassword());
+//            System.out.println("Email/Username: " + credential.getEmailOrUsername() + ", Strength: " + strength);
+//        }
+//    }
 
     public void listCredentialsBySpecificStrength(String strengthCategory) {
         // Filter credentials by strength

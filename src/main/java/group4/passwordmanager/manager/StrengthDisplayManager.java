@@ -15,19 +15,19 @@ public class StrengthDisplayManager {
 
     public void displayStrengths() {
         List<Credential> credentials = credentialService.getAllCredentials();
-        if (credentials.isEmpty()) {
+        if (credentials == null || credentials.isEmpty()) {  // Add null check here
             System.out.println("No credentials available.");
             return;
         }
 
-        for (int i = 0; i < credentials.size(); i++) {
-            Credential credential = credentials.get(i);
+        for (Credential credential : credentials) {
             String strength = StrengthEvaluatorService.evaluatePasswordStrength(credential.getPassword());
-            String tags = String.join(", ", credential.getTags());
-            System.out.println((i + 1) + ": Email/Username: " + credential.getEmailOrUsername()
-                    + ", Website: " + credential.getWebsite()
+            String tags = (credential.getTags() != null) ? String.join(", ", credential.getTags()) : "No Tags";
+            System.out.println("Email/Username: " + (credential.getEmailOrUsername() != null ? credential.getEmailOrUsername() : "Unknown Email/Username")  // Handle null email/username
+                    + ", Website: " + (credential.getWebsite() != null ? credential.getWebsite() : "Unknown Website")  // Handle null website
                     + ", Tags: " + tags
-                    + ", Strength: " + strength);
+                    + ", Strength: " + (strength != null ? strength : "Unknown Strength"));  // Handle null strength
         }
     }
+
 }
