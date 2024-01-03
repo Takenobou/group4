@@ -1,3 +1,28 @@
+# Running the PasswordManagerApp
+
+This guide will help you run the PasswordManagerApp, which is the main file of the application, and navigate through its features.
+
+## Pre-requisites
+
+- Java JDK 17 or higher
+- Gradle
+
+## How to Run
+
+1. **Start the Application**: Run `PasswordManagerApp.java` which is the entry point to the application.
+2. **Follow Console Commands**: After running the application, follow the commands displayed in the console to interact with the program.
+
+## Application Commands
+
+- **create**: Begin using the application by creating new credentials.
+- **strength**: See the password strength rating for your credentials.
+- **sort_strength**: Sort your passwords by their strength rating.
+- **delete**: Delete a specific credential.
+- **delete_all**: Delete all credentials.
+- **last_accessed**: View the most recently viewed credential. This only updates when you use the view command.
+- **view**: View the passwords and other details of your credentials.
+- **exit**: Exit out of the application.
+
 ## Coverage Metric Explanation
 
 In this group project, the coverage report is configured to the test code that I have written compared to the project as a whole. This may not provide an accurate reflection of my individual contribution to the project. It is taking into account paths and files that are not part of my contribution.
